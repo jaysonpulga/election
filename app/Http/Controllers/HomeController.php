@@ -78,13 +78,9 @@ class HomeController extends Controller
     		    }
     			
     		}
-        	
-        		
-        
-    	
-    		
-    		
-    		
+			
+
+
     		//get member voters by gender
     		$select2 ="t1.gender,COUNT(t1.id) AS total_number";
     		$allmembergender = \DB::table('votersinfomations as t1')
@@ -92,28 +88,65 @@ class HomeController extends Controller
     		->join('campaign_group_members AS t2','t2.user_id','=','t1.id')
     		->groupBy('t1.gender')
     		->get();
-    		
-    	   
+	
+    		//get coordinator voters by gender
+    		$select2 ="t1.gender,COUNT(t1.id) AS total_number";
+    		$coordinatorsMembers = \DB::table('votersinfomations as t1')
+    		->select(\DB::raw($select2))
+    		->join('coordinators AS t2','t2.user_id','=','t1.id')
+    		->groupBy('t1.gender')
+    		->get();
+			
+			//get l voters by gender
+    		$select2 ="t1.gender,COUNT(t1.id) AS total_number";
+    		$leadersMembers = \DB::table('votersinfomations as t1')
+    		->select(\DB::raw($select2))
+    		->join('leaders AS t2','t2.user_id','=','t1.id')
+    		->groupBy('t1.gender')
+    		->get();
+		
+			
+			$voterMember = [];	
+        	foreach($allmembergender  as $data)
+    		{
+				$voterMember[] = $data;
+    		}
+			foreach($coordinatorsMembers  as $data)
+    		{
+				$voterMember[] = $data;
+    		}
+			foreach($leadersMembers  as $data)
+    		{   
+				$voterMember[] = $data;
+    		}
+			
+
+		
     	   	$voterMemberMale = 0;
     	    $voterMemberFemale = 0;
     	    $voterMemberUnknown = 0;
     	    
-        	foreach($allmembergender  as $data)
+		
+	
+			$i = 0;
+        	foreach($voterMember  as $data)
     		{
     		    
     		    if($data->gender == 'M')
     		    {
-    		        $voterMemberMale = $data->total_number; 
+    		        $voterMemberMale =  $voterMemberMale  +  $data->total_number; 
     		    }
     		    else if($data->gender == 'F')
     		    {
-    		        $voterMemberFemale = $data->total_number; 
+    		        $voterMemberFemale = $voterMemberFemale  +  $data->total_number; 
     		    }
     		    else{
-    		        $voterMemberUnknown = $voterMemberUnknown + $data->total_number;
+    		         $voterMemberUnknown = $voterMemberUnknown + $data->total_number;
     		    }
-    			
+    		
     		}
+			
+
     	   
     	   
     		
@@ -122,7 +155,7 @@ class HomeController extends Controller
 						'Female' => $female,
 						'unknow_gender' => $unknown,
 						'voterMemberMale' => @$voterMemberMale,
-						'voterMemberFemale' => @$femaleVoters,
+						'voterMemberFemale' => @$voterMemberFemale,
 						'voterMemberUnknown' => @$voterMemberUnknown,
 						);
     		$genderData = (object)$gender;

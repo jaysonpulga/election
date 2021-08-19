@@ -430,7 +430,7 @@
 						 
 					</div>
 					<span style="font-size:14px;margin-left:5px;display:block">Total Unknown Gender- {{@$ChartSex->unknow_gender}}</span>
-					 <span style="font-size:14px;margin-left:5px">Voter's Unknown Gender - {{@$ChartSex->voterMemberFemale}} </span>
+					 <span style="font-size:14px;margin-left:5px">Voter's Unknown Gender - {{@$ChartSex->voterMemberUnknown}} </span>
 				</div>
 		  </div>
 		 

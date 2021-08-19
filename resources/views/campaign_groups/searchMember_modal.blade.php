@@ -114,8 +114,10 @@ $('#btnSearchmember').click(function() {
 $('#btnSearchmember_EDIT').click(function() {
 	
 	
-	var city_val = $("#barangay_value").val();
-	var barangay_val = $("#city_value").val();
+	var city_val = $("#city_value").val();
+	var barangay_val = $("#barangay_value").val();
+
+
 	var search_member = $('#search_member').val();
 
 	SearchMember(city_val,barangay_val,search_member);

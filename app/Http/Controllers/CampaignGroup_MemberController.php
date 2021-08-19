@@ -222,6 +222,7 @@ class CampaignGroup_MemberController extends Controller
 		->get();
 		
 		
+	
 		
 		$select ="t1.user_id";
 		$alreadymembers = \DB::table('campaign_group_members as t1')

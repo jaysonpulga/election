@@ -345,6 +345,8 @@
 				<div style="float:right" >
 					<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
 					<button type="submit" form="MemberDetail_EDIT"   class="btn btn-success btn-primary btn-flat" >SAVE</button>
+
+					
 				</div>
 		  </div>
 		 
@@ -403,10 +405,10 @@ function loadMainAccount()
 	"ajax": {
 			url: "{{asset('loadAllCampaignGroup')}}",
 			type    : "POST",
-			data : {_token: "{{csrf_token()}}", "city":$("#city_show option:selected" ).val(),"barangay":$("#barangay_show option:selected" ).val() },
+			data : {_token: "{{csrf_token()}}", "city":$("#city_show option:selected" ).val(),"barangay":$("#barangay_show option:selected").val() },
 			dataSrc : function ( json ) {
-				$("#data_form").val(JSON.stringify(json.data));
 				
+				$("#data_form").val(JSON.stringify(json.data));			
 				$("#print_city").val($("#city_show option:selected" ).text());
 				$("#print_barangay").val($("#barangay_show option:selected" ).text());
 				
@@ -907,7 +909,7 @@ $(document).on('click','.details',function(){
 				
 					  	var value =  {
 						   "id"         : res.id,
-						   "vin_number" : res.vin_number,
+						   "vin_number" : ""+res.vin_number+"",
 						   "name"	    : res.member,
 						   "action"     : '<a href="javascript:void(0)" class="delete" data-member_vin_number="'+res.vin_number+'"  title="Delete Member" ><i class="fa fa-fw fa-ellipsis-v"></i></a>',
 						   "status"     : 'current',
@@ -1140,10 +1142,14 @@ $(document).on('click','.delete', function(e){
 e.preventDefault();
 	
 	
+	
+	
 	var vin_number = $(this).attr('data-member_vin_number');
 	
 	// Find index of specifi object using findIndex method.
 	var objIndex = temporary_array.findIndex(obj => obj.vin_number  === vin_number );
+	
+
 
 	// get the  status value if  is equal to current
 	var status = temporary_array[objIndex].status;
@@ -1268,6 +1274,17 @@ e.preventDefault();
 	
 	
 });
+</script>
+
+
+<script>
+
+function testko()
+{
+	
+	console.log(temporary_array);
+}
+
 </script>
 
 
