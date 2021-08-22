@@ -148,11 +148,13 @@ Route::post('saving_precinct_info', 'PrecinctLocationController@saving_precinct_
 Route::post('get_precinct', 'PrecinctLocationController@get_precinct')->name('get_precinct');
 Route::post('deleteprecinct', 'PrecinctLocationController@deleteprecinct')->name('deleteprecinct');
 Route::post('getbarangaybelongtoCity', 'PrecinctLocationController@getbarangaybelongtoCity')->name('getbarangaybelongtoCity');
+Route::post('searchAvailablePrecint', 'PrecinctLocationController@searchAvailablePrecint')->name('searchAvailablePrecint');
+Route::post('AddClusterinPrecints', 'PrecinctLocationController@AddClusterinPrecints')->name('AddClusterinPrecints');
+
 
 
 
 ##################### CAMPAIGN GROUP ROUTE #########################################################
-
 ##################### COORDINATOR  #########################################################
 Route::get('/campaign-groups/coordinator', 'CampaignGroup_CoordinatorController@coordinator')->name('coordinator');
 Route::post('searchAvailableCoordinator', 'CampaignGroup_CoordinatorController@searchAvailableCoordinator')->name('searchAvailableCoordinator');

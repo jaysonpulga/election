@@ -1,6 +1,19 @@
 @extends('layouts.main')
 @section('content')
+<style>
+.addcolor {
+    background-color: #f8fb4699 !important;
+}
+.modal-body{
+    max-height: 80vh;
+    overflow-y: auto;
+}
 
+.borderless td, .borderless th {
+    border: none !important; 
+	margin: 20px  !important; 
+}
+</style>
 
 <!-- Main content -->
 <section class="content">
@@ -37,8 +50,14 @@
 						</div>
 					
 						<div class="col-lg-6">
-							<span class="pull-right">
 						
+							
+							<span class="pull-right">
+									<a href="javascript:void(0)" type="button" class="btn btn-warning  btn-flat  btn-lg btnAddCluster">
+										 ADD CLUSTER
+									</a>	
+									&nbsp;
+									&nbsp;
 									<a href="javascript:void(0)" type="button" class="btn btn-success  btn-flat  btn-lg btnAddPrecinct">
 										 ADD PRECINCT
 									</a>	
@@ -156,9 +175,11 @@
  </div>
 <!-- /.content -->
 
+
+
+
 <script>
 $('#select_precinct').change(function() {
-	
 	loadMainAccount();
 });
 </script>
@@ -218,24 +239,24 @@ function reload_table()
 
 <script type="text/javascript">
 $(document).on('click', '.btnAddPrecinct', function(e){
-e.preventDefault(); 
+	e.preventDefault(); 
 
 
-var count =  "<?php echo (count($cities));  ?>";
-if(count == 1){
-	$('select[id="city"]').val("<?php echo $cities[0]->id; ?>");
-	$('select[id="city"]').trigger("change");
-}
-else{
-	$('#city').val("");
-	$('select[id="barangay"]').attr('disabled', 'disabled');
-}
+	var count =  "<?php echo (count($cities));  ?>";
+	if(count == 1){
+		$('select[id="city"]').val("<?php echo $cities[0]->id; ?>");
+		$('select[id="city"]').trigger("change");
+	}
+	else{
+		$('#city').val("");
+		$('select[id="barangay"]').attr('disabled', 'disabled');
+	}
 
-$('#barangay').val("");
-$('#precinct').val("");
-$('#action').val("create_new");
-var options = { backdrop : 'static'}
-$('#precinct_modal').modal(options); 
+	$('#barangay').val("");
+	$('#precinct').val("");
+	$('#action').val("create_new");
+	var options = { backdrop : 'static'}
+	$('#precinct_modal').modal(options); 
 
 });
 </script>
@@ -355,6 +376,7 @@ $('#city').change(function() {
 	{
 		
 		$('select[id="barangay"]').removeAttr("disabled");
+		$('select[id="barangay2"]').removeAttr("disabled");
 	
 		
 		$.ajax({
@@ -376,6 +398,7 @@ $('#city').change(function() {
 
 				
 				$('#barangay').empty().html(selectValue);
+				$('#barangay2').empty().html(selectValue);
 							
 			}	
 		});
@@ -447,5 +470,91 @@ event.preventDefault();
 }
 
 </script>
+
+
+<script>
+var temporary_array = [];
+var delete_item_array = [];
+</script>
+
+
+<script>
+Array.prototype.contains = function (val) 
+{ 
+
+	for(var i = 0; i < this.length; i++ )
+	{
+		if(JSON.stringify(this[i]) === JSON.stringify(val)) return true;
+	}
+	return false;
+	
+} 
+</script>
+
+<!--// div view details modal -->
+@include('LocationInfo.cluster_modal') 
+@include('LocationInfo.availableprecint_modal')  
+<!--  ~end view details modal -->
+
+
+
+<script type="text/javascript">
+function precinttableLists()
+{
+	
+	// check if assign member
+	//checkAssignTable();
+
+	var getTotal  = $('.precinttableLists').DataTable({ 
+		
+		"data" : temporary_array,	
+		"order":[],
+		"processing": true, //Feature control the processing indicator.
+		"bFilter": false,
+		"bDestroy": true,
+		"aLengthMenu": [[5,7,10, 15, 25, 50, 75, -1], [5,7,10, 15, 25, 50, 75, "All"]],
+		"iDisplayLength": 7,
+		
+		"columns" : [
+				{'data': 'name'},
+				{'data': 'action'}
+
+		],
+
+		"fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+                if (aData["action"] === "deleteline") {
+                    $(nRow).remove();
+                    $(nRow).hide();
+                }
+				
+				if ( aData['status'] == "AddNew" )
+				{
+					//$('td', nRow).css('background-color', '#dedddd');
+					 $(nRow).css('background-color', 'rgb(255 255 150)');
+				}
+				
+				return nRow;
+        }
+		
+
+	});
+	
+	
+	// check the count of table
+	
+	var  checked =  getTotal.data().length;
+	
+	if(checked > 0)
+	{
+		$(".submitCluster").attr("disabled", false);
+	}
+	else{
+		$(".submitCluster").attr("disabled", true);
+	}
+	
+
+}
+</script
+
 
 @endsection

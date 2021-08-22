@@ -251,5 +251,77 @@ class PrecinctLocationController extends Controller
 		
 		
 	}
+	
+	
+	public function searchAvailablePrecint(Request $request)
+	{
+		
+		$search = $request->search;
+		$barangay = $request->barangay;
+		
+		
+		$select ="t1.name,t1.id,t1.barangay_id";
+		$getallData = \DB::table('precincts as t1')
+		->when(!empty($search), function ($q) use ($search) {
+			return $q->where('t1.name', $search );
+		})
+		->where('t1.barangay_id', '=',$barangay)
+		->select(\DB::raw($select))
+		->get();
+		
+		
+		
+		$data = array();
+		
+		if(!empty($getallData)){
+		
+			foreach ($getallData as $dd){
+				
+				
+				$checkbox =  '<input type="checkbox" id="selected_checkbox" name="selected_checkbox"  data-precint_id="'.$dd->id.'" data-name="'.$dd->name.'" >';
+				
+				$row = array();
+				$row['id'] =  $dd->id;
+				$row['checkbox'] = $checkbox;
+				$row['precinct'] =  $dd->name;
+				$row['barangay_id'] =  $dd->barangay_id;
+				$data[] = $row;
+			}
+		}
+		else{
+			
+			$data = [];
+		}
+		
+		
+			$output = array("data" => $data);
+			return response()->json($output);
+		
+	}
+	
+	
+	public function AddClusterinPrecints(Request $request)
+	{
+		
+		
+		
+		
+		 // Update Precint 
+		foreach($request->array_precinct as $data){
+			
+				\DB::table('precincts')
+			  ->where('id', $data['precint_id'])
+			   ->where('barangay_id', $request->barangay)
+              ->update([
+					'cluster' => $request->cluster
+			  ]);
+			
+		}
+		
+		
+		echo "save";
+		
+	}
+	
 
 }
